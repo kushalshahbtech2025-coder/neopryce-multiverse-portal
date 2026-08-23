@@ -7,14 +7,6 @@
     "start": "node server.js",
     "dev": "node server.js"
   },
-  "keywords": [
-    "bright-data",
-    "web-scraping",
-    "huggingface",
-    "qwen-32b",
-    "price-tracker",
-    "hackathon"
-  ],
   "author": "Karthik Prakash, Kushal Shah, Mannat Tanda, Iha Pradhan",
   "license": "MIT",
   "engines": {

@@ -58,6 +58,26 @@ NEO-PRYCE enriches scraped raw web data using a 2-stage Hugging Face integration
 
 ---
 
+## 🏛️ Architecture & Libraries Used (Loaded via CDN)
+
+This is a pure high-performance HTML/CSS/JS application with **zero complex build steps, bundlers, or heavy frameworks**.
+
+### 📁 Architecture Breakdown:
+- **[`index.html`](file:///c:/Users/DELL/Downloads/stitch_multiverse_price_portal%20%282%29/stitch_multiverse_price_portal/index.html)**: Main DOM layout and UI components. Uses Tailwind CSS via CDN.
+- **[`css/custom.css`](file:///c:/Users/DELL/Downloads/stitch_multiverse_price_portal%20%282%29/stitch_multiverse_price_portal/css/custom.css)**: Custom cyberpunk theme overrides, spider-web background effects, and glowing LED indicators.
+- **[`js/app.js`](file:///c:/Users/DELL/Downloads/stitch_multiverse_price_portal%20%282%29/stitch_multiverse_price_portal/js/app.js)**: Tab routing, dynamic UI card rendering, and live telemetry log stream handlers.
+- **[`js/graphics-effects.js`](file:///c:/Users/DELL/Downloads/stitch_multiverse_price_portal%20%282%29/stitch_multiverse_price_portal/js/graphics-effects.js)**: Lenis smooth kinetic scrolling, GSAP card entrance animations, warp speed canvas, and Web Audio API synthesizer.
+- **[`js/backend-engine.js`](file:///c:/Users/DELL/Downloads/stitch_multiverse_price_portal%20%282%29/stitch_multiverse_price_portal/js/backend-engine.js)**: Connects to `/api/scrape` and processes live Bright Data & Hugging Face data.
+
+### 📦 Libraries Used (Loaded via CDN in `index.html`):
+- **Tailwind CSS** (CSS styling framework)
+- **Chart.js** (ML price curves & trend charts)
+- **Lenis** (Kinetic smooth scrolling)
+- **GSAP & ScrollTrigger** (High-performance timeline motion & card animations)
+- **Web Audio API** (Procedural futuristic UI audio synthesizer)
+
+---
+
 ## 🏗️ System Architecture
 
 ```

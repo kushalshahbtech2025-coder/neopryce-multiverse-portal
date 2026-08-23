@@ -14,7 +14,42 @@ window.GraphicsEffects = (function () {
     initParticleCanvas();
     init3DTiltCards();
     initSoundToggle();
+    initLenisSmoothScroll();
+    initGSAPAnimations();
   });
+
+  /**
+   * Lenis Kinetic Smooth Scrolling Integration
+   */
+  function initLenisSmoothScroll() {
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+  }
+
+  /**
+   * GSAP Card Entrance & Kinetic Motion Choreography
+   */
+  function initGSAPAnimations() {
+    if (typeof gsap !== 'undefined') {
+      gsap.from(".neo-panel", {
+        duration: 0.7,
+        y: 18,
+        opacity: 0.85,
+        stagger: 0.08,
+        ease: "power2.out"
+      });
+    }
+  }
 
   /**
    * 1. Intro Sequence - Instant Action Multiverse Landing
@@ -26,9 +61,21 @@ window.GraphicsEffects = (function () {
     const enterBtn = document.getElementById('enter-portal-btn');
     if (enterBtn) {
       enterBtn.addEventListener('click', () => {
+        getAudioContext();
+        playWarpSound();
         triggerPortalWarpOut(loader);
       });
     }
+  }
+
+  function triggerPortalWarpOut(loader) {
+    if (!loader) return;
+    loader.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    loader.style.opacity = '0';
+    loader.style.transform = 'scale(1.08)';
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 500);
   }
 
   /**
@@ -149,9 +196,11 @@ window.GraphicsEffects = (function () {
   }
 
   function triggerPortalWarpOut(loaderEl) {
-    if (audioEnabled) playWarpSound();
-    loaderEl.classList.add('portal-warp-exit');
-
+    if (!loaderEl) return;
+    try { playWarpSound(); } catch (e) {}
+    loaderEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    loaderEl.style.opacity = '0';
+    loaderEl.style.transform = 'scale(1.08)';
     setTimeout(() => {
       loaderEl.style.display = 'none';
     }, 400);
@@ -261,10 +310,33 @@ window.GraphicsEffects = (function () {
   /**
    * 4. Web Audio Synthesizer Controls
    */
+  let audioCtx = null;
+  let audioEnabled = true; // Default ON for rich cyberpunk audio feedback
+  let canvas, ctx, particles = [];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initIntroSequence();
+    initRoamingBot();
+    initParticleCanvas();
+    init3DTiltCards();
+    initSoundToggle();
+
+    // Global listener: unlock audio context & play synth audio on ANY button or tab click
+    document.addEventListener('click', (e) => {
+      getAudioContext();
+      const interactive = e.target.closest('button, a, .nav-tab, [data-target-tab], [onclick]');
+      if (interactive) {
+        playSynthBeep(720, 0.08);
+      }
+    });
+  });
+
   function getAudioContext() {
     if (!audioCtx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) audioCtx = new AudioCtx();
+      const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtxClass) {
+        audioCtx = new AudioCtxClass();
+      }
     }
     if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
@@ -272,8 +344,7 @@ window.GraphicsEffects = (function () {
     return audioCtx;
   }
 
-  function playSynthBeep(freq = 550, duration = 0.06) {
-    if (!audioEnabled) return;
+  function playSynthBeep(freq = 750, duration = 0.09) {
     try {
       const ctx = getAudioContext();
       if (!ctx) return;
@@ -281,10 +352,11 @@ window.GraphicsEffects = (function () {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
-      osc.type = 'sine';
+      osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.45, ctx.currentTime + duration);
 
-      gain.gain.setValueAtTime(0.03, ctx.currentTime);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
 
       osc.connect(gain);

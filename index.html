@@ -9,6 +9,12 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <!-- Chart.js for ML Price Curves -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lenis Smooth Kinetic Scrolling CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css"/>
+  <!-- GSAP & ScrollTrigger Animation CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <!-- Google Fonts & Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -65,7 +71,7 @@
   <canvas id="speed-lines-canvas"></canvas>
 
   <!-- Epic Intro Portal Breach Dimension Landing -->
-  <div id="intro-portal-loader">
+  <div id="intro-portal-loader" onclick="this.style.display='none'">
     <!-- Cyberpunk Spider Web Backdrop -->
     <div class="spider-web-backdrop">
       <svg class="spider-web-svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
@@ -281,7 +287,7 @@
       </p>
 
       <!-- Instant Enter Button (Single Lightning Bolt Icon) -->
-      <button id="enter-portal-btn" class="mt-2 px-8 sm:px-12 py-3.5 sm:py-4 bg-primary-container text-white font-headline-md text-xl sm:text-2xl comic-border comic-shadow-pink hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#00e3fd] transition-all tracking-wider flex items-center justify-center gap-3 cursor-pointer group">
+      <button id="enter-portal-btn" onclick="document.getElementById('intro-portal-loader').style.display='none';" class="mt-2 px-8 sm:px-12 py-3.5 sm:py-4 bg-primary-container text-white font-headline-md text-xl sm:text-2xl comic-border comic-shadow-pink hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#00e3fd] transition-all tracking-wider flex items-center justify-center gap-3 cursor-pointer group">
         <span class="text-secondary font-bold text-xl group-hover:scale-125 transition-transform">⚡</span>
         ENTER THE MULTIVERSE
       </button>

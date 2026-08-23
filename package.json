@@ -1,0 +1,23 @@
+{
+  "name": "neopryce-multiverse-portal",
+  "version": "1.0.0",
+  "description": "Multiverse Price & Inventory Intelligence Portal powered by Bright Data Scraper Studio & Hugging Face Qwen-32B AI Model",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "bright-data",
+    "web-scraping",
+    "huggingface",
+    "qwen-32b",
+    "price-tracker",
+    "hackathon"
+  ],
+  "author": "Karthik Prakash, Kushal Shah, Mannat Tanda, Iha Pradhan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

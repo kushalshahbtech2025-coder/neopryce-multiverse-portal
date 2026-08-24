@@ -1466,9 +1466,36 @@ function parseRequestBody(req, res, callback) {
   });
 }
 
-// Start HTTP Server
-server.listen(PORT, () => {
-  logServerEvent('info', `⚡ NeoPryce Backend Server running on http://localhost:${PORT}`);
-  logServerEvent('info', `BrightData Web Unlocker Integration: ${BRIGHTDATA_API_KEY ? 'CONFIGURED (' + BRIGHTDATA_ZONE + ')' : 'NOT_CONFIGURED (set BRIGHTDATA_API_KEY)'}`);
-  logServerEvent('info', `Hugging Face Inference API Integration: ${HUGGINGFACE_API_KEY ? 'CONFIGURED (' + HUGGINGFACE_MODEL + ')' : 'NOT_CONFIGURED (set HUGGINGFACE_API_KEY)'}`);
-});
+// Keep-Alive Self-Ping Engine (Prevents Render / Free hosting spin-down)
+function startKeepAliveEngine() {
+  const pingIntervalMs = 10 * 60 * 1000; // Ping every 10 minutes
+  setInterval(() => {
+    const targetHost = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+    const pingUrl = targetHost.endsWith('/') ? `${targetHost}api/health` : `${targetHost}/api/health`;
+    
+    logServerEvent('info', `[KEEP-ALIVE] Sending periodic ping request to ${pingUrl}...`);
+    const httpLib = pingUrl.startsWith('https') ? https : http;
+    
+    httpLib.get(pingUrl, (res) => {
+      logServerEvent('info', `[KEEP-ALIVE] Ping successful! Status code: ${res.statusCode}`);
+    }).on('error', (err) => {
+      logServerEvent('warn', `[KEEP-ALIVE] Ping warning: ${err.message}`);
+    });
+  }, pingIntervalMs);
+}
+
+// Start HTTP Server (when executed directly)
+if (require.main === module) {
+  server.listen(PORT, () => {
+    logServerEvent('info', `⚡ NeoPryce Backend Server running on http://localhost:${PORT}`);
+    logServerEvent('info', `BrightData Web Unlocker Integration: ${BRIGHTDATA_API_KEY ? 'CONFIGURED (' + BRIGHTDATA_ZONE + ')' : 'NOT_CONFIGURED (set BRIGHTDATA_API_KEY)'}`);
+    logServerEvent('info', `Hugging Face Inference API Integration: ${HUGGINGFACE_API_KEY ? 'CONFIGURED (' + HUGGINGFACE_MODEL + ')' : 'NOT_CONFIGURED (set HUGGINGFACE_API_KEY)'}`);
+    
+    startKeepAliveEngine();
+  });
+}
+
+// Export serverless handler for Vercel / Cloud Functions
+module.exports = (req, res) => {
+  server.emit('request', req, res);
+};

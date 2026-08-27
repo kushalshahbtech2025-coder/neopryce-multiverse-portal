@@ -4,7 +4,7 @@
   "description": "Multiverse Price & Inventory Intelligence Portal powered by Bright Data Scraper Studio & Hugging Face Qwen-32B AI Model",
   "scripts": {
     "build": "echo 'Static build complete'",
-    "start": "node server.js"
+    "start": "echo 'Serverless start'"
   },
   "keywords": [
     "bright-data",
